@@ -2,3 +2,8 @@
 testing_images
 training_images
 training_labels.txt
+
+# Tmp ignore *.npy
+*.npy
+
+.vscode
