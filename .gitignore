@@ -1,0 +1,4 @@
+# Ignore all data from CodaLab competition
+testing_images
+training_images
+training_labels.txt
