@@ -1,9 +1,6 @@
 from __future__ import print_function, division
 import os
-import cv2
 from PIL import Image
-from skimage import io, transform
-import numpy as np
 import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
@@ -13,6 +10,13 @@ DATA_ROOT = r"./Data/"
 
 
 def get_data(mode):
+
+    if mode == "test":
+        test_path = os.path.join(DATA_ROOT, "testing_images")
+        test_name = os.listdir(test_path)
+        
+        return test_name, None
+    
     VAL_RATIO = 0.2
     file = open(DATA_ROOT + "training_labels.txt", "r")
     train_name = []
@@ -51,7 +55,7 @@ class BirdDataset(Dataset):
             transform (callable, optional): Optional transform to be applied
                 on a sample.
         """
-        self.img_names, self.img_labels = get_data("train")
+        self.img_names, self.img_labels = get_data(mode)
         self.root_dir = root_dir
         self.transform = transform
         self.mode = mode
@@ -63,35 +67,48 @@ class BirdDataset(Dataset):
         if torch.is_tensor(idx):
             idx = idx.tolist()
 
-        img_name = os.path.join(self.root_dir,"training_images",
-                                self.img_names[idx])
-        self.img = Image.open(img_name)
-        self.label = self.img_labels[idx]
+        if self.img_labels is not None:
+            img_name = os.path.join(self.root_dir,"training_images",
+                                    self.img_names[idx])
+            self.img = Image.open(img_name)
+            self.label = self.img_labels[idx]
+            if self.transform:
+                self.img = self.transform(self.img)
+            
+            return self.img, self.label
 
-        if self.transform:
-            self.img = self.transform(self.img)
+        else: 
+            img_name = os.path.join(self.root_dir,"testing_images",
+                                    self.img_names[idx])
+            self.img = Image.open(img_name)
+            if self.transform:
+                self.img = self.transform(self.img)
 
-        return self.img, self.label
+            return self.img
 
 
 
 if __name__ == "__main__":
-    img,label = get_data('train')
-    # print(img)
-    # print(label)
-    print(max(label))
-    img1,label1 = get_data('val')
-    print(max(label1))
+    # img,label = get_data('train')
+    # # print(img)
+    # # print(label)
+    # print(max(label))
+    # img1,label1 = get_data('val')
+    # print(max(label1))
     BATCH_SIZE = 64
     train_transform = transforms.Compose([
         transforms.Resize((256, 256)),
         # transforms.RandomHorizontalFlip(1.0),
         # transforms.RandomVerticalFlip(1.0),
         transforms.ToTensor(),
-        # transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
-    train_set = BirdDataset(DATA_ROOT, "train", transform = train_transform)
-    train_loader = DataLoader(train_set, batch_size = BATCH_SIZE, shuffle = True)
-    for inputs, labels in train_loader:
-        print(inputs)
-        print(labels)
+    train_set = BirdDataset(DATA_ROOT, "val", transform = train_transform)
+    train_loader = DataLoader(train_set, batch_size = BATCH_SIZE, shuffle = False)
+    # for inputs, labels in train_loader:
+    #     print(inputs)
+    #     print(labels)
+    #     break
+    # for inputs in train_loader:
+    #     print(inputs)
+    #     break

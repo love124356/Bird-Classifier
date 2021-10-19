@@ -7,29 +7,56 @@ import torch.optim as optim
 import torch.nn as nn
 from torchsummary import summary
 
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+print(f'DEVICE: {device}')
 
 BATCH_SIZE = 64
 DATA_ROOT = r"./Data/"
 LR = 1e-4
-num_classes = 200
+NUM_CLASSES = 200
+IMG_SIZE = 256
 
-train_transform = transforms.Compose([
-    transforms.Resize((256, 256)),
-    # transforms.RandomHorizontalFlip(1.0),
-    # transforms.RandomVerticalFlip(1.0),
-    transforms.ToTensor(),
-    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-])
+transform_options = [
+    transforms.ColorJitter(brightness=0.5, contrast=0.5, hue=0.5),
+    transforms.RandomRotation(degrees=[-15, 15]),
+    transforms.GaussianBlur(kernel_size=3),
+    transforms.RandomAffine(0, shear=20)
+]
+
+data_transforms = {
+    'train': transforms.Compose([
+        transforms.RandomResizedCrop(IMG_SIZE),
+        transforms.RandomHorizontalFlip(),
+        transforms.RandomApply([
+             transforms.RandomChoice(transform_options)
+        ], p = 0.9),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    ]),
+    'val': transforms.Compose([
+        transforms.Resize((IMG_SIZE, IMG_SIZE)),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    ]),
+}
+
+# train_transform = transforms.Compose([
+#     transforms.Resize((IMG_SIZE, IMG_SIZE)),
+#     transforms.RandomHorizontalFlip(),
+#     transforms.RandomVerticalFlip(),
+#     transforms.ToTensor(),
+#     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+# ])
 
 
-train_set = BirdDataset(DATA_ROOT, "train", transform = train_transform)
+train_set = BirdDataset(DATA_ROOT, "train", transform = data_transforms['train'])
 train_loader = DataLoader(train_set, batch_size = BATCH_SIZE, shuffle = True)
-val_set = BirdDataset(DATA_ROOT, "val", transform = train_transform)
+val_set = BirdDataset(DATA_ROOT, "val", transform = data_transforms['val'])
 val_loader = DataLoader(val_set, batch_size = BATCH_SIZE, shuffle = False)
 
 resnet50 = models.resnet50(pretrained = True)
 num_ft = resnet50.fc.in_features
-resnet50.fc = nn.Linear(num_ft, num_classes)
+resnet50.fc = nn.Linear(num_ft, NUM_CLASSES)
 
 # device = torch.device("cuda:0")
 # if torch.cuda.is_available():
@@ -68,8 +95,7 @@ for name,child in resnet50.named_children():
 #         for name2, params in child.named_parameters():
 #             params.requires_grad = False
 #     ct += 1
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-model_path = './model.ckpt'
+model_path = "./Model/resnet50.pt"
 
 def train_model(model, criterion, optimizer, num_epochs = 25):
     # pass
@@ -129,6 +155,8 @@ def train_model(model, criterion, optimizer, num_epochs = 25):
     if len(val_set) == 0:
         torch.save(resnet50.state_dict(), model_path)
         print('saving model at last epoch')
+
+    torch.save(model, model_path)
 
 NUM_EPOCHS = 25
 model_ft = train_model(resnet50, criterion, optimizer,

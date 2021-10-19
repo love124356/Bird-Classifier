@@ -7,3 +7,4 @@ training_labels.txt
 *.npy
 
 .vscode
+__pycache__
