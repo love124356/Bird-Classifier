@@ -14,22 +14,23 @@ BATCH_SIZE = 64
 DATA_ROOT = r"./Data/"
 LR = 1e-4
 NUM_CLASSES = 200
-IMG_SIZE = 256
+IMG_SIZE = 224
 
-transform_options = [
-    transforms.ColorJitter(brightness=0.5, contrast=0.5, hue=0.5),
-    transforms.RandomRotation(degrees=[-15, 15]),
-    transforms.GaussianBlur(kernel_size=3),
-    transforms.RandomAffine(0, shear=20)
-]
+# transform_options = [
+#     transforms.ColorJitter(brightness=0.5, contrast=0.5, hue=0.5),
+#     transforms.RandomRotation(degrees=[-15, 15]),
+#     transforms.GaussianBlur(kernel_size=3),
+#     transforms.RandomAffine(0, shear=20)
+# ]
 
 data_transforms = {
     'train': transforms.Compose([
-        transforms.RandomResizedCrop(IMG_SIZE),
+        # transforms.RandomResizedCrop(IMG_SIZE),
+        transforms.Resize((IMG_SIZE, IMG_SIZE)),
         transforms.RandomHorizontalFlip(),
-        transforms.RandomApply([
-             transforms.RandomChoice(transform_options)
-        ], p = 0.9),
+        # transforms.RandomApply([
+        #      transforms.RandomChoice(transform_options)
+        # ], p = 0.9),
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ]),
@@ -57,10 +58,10 @@ val_loader = DataLoader(val_set, batch_size = BATCH_SIZE, shuffle = False)
 resnet50 = models.resnet50(pretrained = True)
 num_ft = resnet50.fc.in_features
 resnet50.fc = nn.Linear(num_ft, NUM_CLASSES)
+# resnet50 = resnet50.to(device)
 
-# device = torch.device("cuda:0")
-# if torch.cuda.is_available():
-#     resnet50.cuda(0)
+if torch.cuda.is_available():
+    resnet50.cuda(0)
 # print(f'DEVICE: {device}')
 
 optimizer = optim.Adam(resnet50.parameters(), lr = LR)
@@ -74,16 +75,16 @@ def same_seeds(seed):
 
 same_seeds(0)
 
-summary(resnet50, (3, 256, 256))
+# summary(resnet50, (3, 256, 256))
 print(resnet50)
 
 for name,child in resnet50.named_children():
     if name in ['layer4','fc']:
-        print(name + ' is unfrozen')
+        # print(name + ' is unfrozen')
         for param in child.parameters():
             param.requires_grad = True
     else:
-        print(name + ' is frozen')
+        # print(name + ' is frozen')
         for param in child.parameters():
             param.requires_grad = False
 
@@ -144,7 +145,8 @@ def train_model(model, criterion, optimizer, num_epochs = 25):
                 # if the model improves, save a checkpoint at this epoch
                 if val_acc > best_acc:
                     best_acc = val_acc
-                    torch.save(model.state_dict(), model_path)
+                    # torch.save(model.state_dict(), model_path)
+                    torch.save(resnet50, model_path)
                     print('saving model with acc {:.3f}'.format(best_acc/len(val_set)))
         else:
             print('[{:03d}/{:03d}] Train Acc: {:3.6f} Loss: {:3.6f}'.format(
@@ -153,11 +155,12 @@ def train_model(model, criterion, optimizer, num_epochs = 25):
 
     # if not validating, save the last epoch
     if len(val_set) == 0:
-        torch.save(resnet50.state_dict(), model_path)
+        # torch.save(resnet50.state_dict(), model_path)
+        torch.save(resnet50, model_path)
         print('saving model at last epoch')
 
-    torch.save(model, model_path)
+    # torch.save(model, model_path)
 
-NUM_EPOCHS = 25
+NUM_EPOCHS = 200
 model_ft = train_model(resnet50, criterion, optimizer,
                         num_epochs = NUM_EPOCHS)

@@ -12,8 +12,9 @@ DATA_ROOT = r"./Data/"
 def get_data(mode):
 
     if mode == "test":
-        test_path = os.path.join(DATA_ROOT, "testing_images")
-        test_name = os.listdir(test_path)
+        with open(DATA_ROOT + 'testing_img_order.txt') as f:
+            test_name = [x.strip().split(' ')[0] for x in f.readlines()]  # all the testing images
+            # print(test_name)
         
         return test_name, None
     
@@ -33,7 +34,7 @@ def get_data(mode):
         train_name = train_name[:percent]
         train_label = train_label[:percent]
 
-        return train_name, train_label
+        return train_name * 2, train_label * 2
     
     elif mode == "val":
         percent = int(len(train_name) * (1 - VAL_RATIO))
