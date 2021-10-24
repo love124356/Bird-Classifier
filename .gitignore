@@ -1,10 +1,7 @@
-# Ignore all data from CodaLab competition
-testing_images
-training_images
-training_labels.txt
+# Ignore all data from CodaLab competition and Model
+Data
+Model
 
-# Tmp ignore *.npy
-*.npy
-
+# env 
 .vscode
 __pycache__

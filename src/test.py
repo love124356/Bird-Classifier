@@ -1,6 +1,7 @@
+from __future__ import print_function, division
 import torch
 import numpy as np
-from data_preprocessing_tmp import BirdDataset
+from dataset import BirdDataset
 from torchvision import transforms
 from torch.utils.data import DataLoader
 
@@ -15,7 +16,7 @@ with open(DATA_ROOT + 'testing_img_order.txt') as f:
     test_images = [x.strip().split(' ')[0] for x in f.readlines()]  # all the testing images
     # print(test_images)
 with open(DATA_ROOT + 'classes.txt') as f:
-    classes = [x.strip().split(' ')[0] for x in f.readlines()]  # all the testing images
+    classes = [x.strip().split(' ')[0] for x in f.readlines()]  # all the classes
     # print(classes)
 
 
@@ -29,7 +30,7 @@ test_set = BirdDataset(DATA_ROOT, "test", transform = test_transform)
 test_loader = DataLoader(test_set, batch_size = BATCH_SIZE, shuffle = False)
 
 
-test_model = torch.load("./Model/resnet50_lessTRANS.pt", map_location = torch.device("cpu"))
+test_model = torch.load("./Model/resnet50_lessTRANS.pt", map_location = torch.device(device))
 test_model.eval()
 
 
@@ -41,11 +42,10 @@ with torch.no_grad():
         inputs = data
         inputs = inputs.to(device)
         outputs = test_model(inputs)
-        _, test_pred = torch.max(outputs, 1) # get the index of the class with the highest probability
+        # get the index of the class with the highest probability
+        _, test_pred = torch.max(outputs, 1)
         for y in test_pred.cpu().numpy():
-            # print(y)
             predict.append(y)
-        # break
 
 
 submission = []
@@ -55,4 +55,4 @@ for i, y in enumerate(predict):
 print(submission)
 
 
-np.savetxt('answer.txt', submission, fmt='%s')
+np.savetxt(DATA_ROOT + 'answer.txt', submission, fmt='%s')

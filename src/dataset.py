@@ -6,8 +6,8 @@ from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 
 
-DATA_ROOT = r"./Data/"
-
+DATA_ROOT = r"./data/"
+VAL_RATIO = 0.2
 
 def get_data(mode):
 
@@ -17,8 +17,7 @@ def get_data(mode):
             # print(test_name)
         
         return test_name, None
-    
-    VAL_RATIO = 0.2
+
     file = open(DATA_ROOT + "training_labels.txt", "r")
     train_name = []
     train_label = []
