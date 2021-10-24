@@ -11,12 +11,14 @@ print(f'DEVICE: {device}')
 DATA_ROOT = r"./Data/"
 BATCH_SIZE = 64
 
-
 with open(DATA_ROOT + 'testing_img_order.txt') as f:
-    test_images = [x.strip().split(' ')[0] for x in f.readlines()]  # all the testing images
+    # all the testing images
+    test_images = [x.strip().split(' ')[0] for x in f.readlines()]
     # print(test_images)
+
 with open(DATA_ROOT + 'classes.txt') as f:
-    classes = [x.strip().split(' ')[0] for x in f.readlines()]  # all the classes
+    # all the classes
+    classes = [x.strip().split(' ')[0] for x in f.readlines()]
     # print(classes)
 
 
@@ -26,16 +28,17 @@ test_transform = transforms.Compose([
     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 ])
 
-test_set = BirdDataset(DATA_ROOT, "test", transform = test_transform)
-test_loader = DataLoader(test_set, batch_size = BATCH_SIZE, shuffle = False)
+test_set = BirdDataset(DATA_ROOT, "test", transform=test_transform)
+test_loader = DataLoader(test_set, batch_size=BATCH_SIZE, shuffle=False)
 
 
-test_model = torch.load("./Model/resnet50_lessTRANS.pt", map_location = torch.device(device))
+test_model = torch.load("./Model/resnet50_lessTRANS.pt",
+                        map_location=torch.device(device))
 test_model.eval()
 
 
 predict = []
-test_model.eval() # set the model to evaluation mode
+test_model.eval()  # set the model to evaluation mode
 with torch.no_grad():
     for i, data in enumerate(test_loader):
         # print(test_set[i])
@@ -53,6 +56,5 @@ for i, y in enumerate(predict):
     # print('{},{}\n'.format(test_images[i], classes[y]))
     submission.append([test_images[i], classes[y]])
 print(submission)
-
 
 np.savetxt(DATA_ROOT + 'answer.txt', submission, fmt='%s')

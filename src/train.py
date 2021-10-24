@@ -11,7 +11,6 @@ from torchvision import transforms
 from torch.utils.data import DataLoader
 from torch.optim import lr_scheduler
 
-plt.ion()
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(f'DEVICE: {device}')
@@ -24,14 +23,15 @@ IMG_SIZE = 224
 MODEL_PATH = "./model/resnet50.pt"
 NUM_EPOCHS = 200
 
+
 def same_seeds(seed):
     torch.manual_seed(seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed(seed)
-        torch.cuda.manual_seed_all(seed)  
+        torch.cuda.manual_seed_all(seed)
 
 
-def train_model(model, criterion, optimizer, scheduler, num_epochs = 25):
+def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
     since = time.time()
 
     best_model_wts = copy.deepcopy(model.state_dict())
@@ -137,24 +137,24 @@ data_transforms = {
 #     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 # ])
 
-image_datasets = {x: BirdDataset(DATA_ROOT, x, transform = data_transforms[x])
-                for x in ["train", "val"]}
+image_datasets = {x: BirdDataset(DATA_ROOT, x, transform=data_transforms[x])
+                  for x in ["train", "val"]}
 
 dataloaders = {}
-dataloaders["train"] =  DataLoader(image_datasets["train"], batch_size = BATCH_SIZE,
-                                shuffle = True)
-dataloaders["val"] =  DataLoader(image_datasets["val"], batch_size = BATCH_SIZE,
-                                shuffle = True)
+dataloaders["train"] = DataLoader(image_datasets["train"],
+                                  batch_size=BATCH_SIZE, shuffle=True)
+dataloaders["val"] = DataLoader(image_datasets["val"],
+                                batch_size=BATCH_SIZE, shuffle=True)
 
 dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'val']}
 
-model_ft = models.resnet50(pretrained = True)
+model_ft = models.resnet50(pretrained=True)
 num_ftrs = model_ft.fc.in_features
 model_ft.fc = nn.Linear(num_ftrs, NUM_CLASSES)
 model_ft = model_ft.to(device)
 
-for name,child in model_ft.named_children():
-    if name in ['layer4','fc']:
+for name, child in model_ft.named_children():
+    if name in ['layer4', 'fc']:
         # print(name + ' is unfrozen')
         for param in child.parameters():
             param.requires_grad = True
@@ -165,13 +165,12 @@ for name,child in model_ft.named_children():
 
 print(model_ft)
 
-
-optimizer = optim.SGD(model_ft.parameters(), lr = LR, momentum=0.9)
+optimizer = optim.SGD(model_ft.parameters(), lr=LR, momentum=0.9)
 criterion = nn.CrossEntropyLoss()
 exp_lr_scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
 
 # fix random seed
 same_seeds(0)
 
-model_ft= train_model(model_ft, criterion, optimizer, exp_lr_scheduler,
-                        num_epochs = NUM_EPOCHS)
+model_ft = train_model(model_ft, criterion, optimizer, exp_lr_scheduler,
+                       num_epochs=NUM_EPOCHS)
