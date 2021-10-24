@@ -13,12 +13,12 @@ BATCH_SIZE = 64
 
 with open(DATA_ROOT + 'testing_img_order.txt') as f:
     # all the testing images
-    test_images = [x.strip().split(' ')[0] for x in f.readlines()]
+    test_images = [x.strip() for x in f.readlines()]
     # print(test_images)
 
 with open(DATA_ROOT + 'classes.txt') as f:
     # all the classes
-    classes = [x.strip().split(' ')[0] for x in f.readlines()]
+    classes = [x.strip() for x in f.readlines()]
     # print(classes)
 
 

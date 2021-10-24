@@ -14,7 +14,7 @@ def get_data(mode):
 
     if mode == "test":
         with open(DATA_ROOT + 'testing_img_order.txt') as f:
-            test_name = [x.strip().split(' ')[0] for x in f.readlines()]
+            test_name = [x.strip() for x in f.readlines()]
             # print(test_name)
 
         return test_name, None
