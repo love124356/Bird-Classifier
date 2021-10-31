@@ -44,6 +44,13 @@ data
 
 ## Repository Structure
 
+Run the following command to build the data directory.
+```
+mkdir model
+mkdir data
+```
+
+The repository structure is:
 ```
 BirdClassifier
   +- data           # all file used in the program and the prediction(answer.txt)
