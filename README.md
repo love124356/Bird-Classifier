@@ -1,60 +1,89 @@
 # BirdClassifier
 
-This repository is the official implementation of [My Paper Title](https://arxiv.org/abs/2030.12345). 
+This repository gathers the code for bird image classification from the [in-class CodaLab competition](https://competitions.codalab.org/competitions/35668?secret_key=09789b13-35ec-4928-ac0f-6c86631dda07).
 
->📋  Optional: include a graphic explaining your approach/main result, bibtex entry, link to demos, blog posts and tutorials
+Use ResNeXt-101 32x8d with data augmentation and SGD with weight_decay optimizer + 1 cosine annealing learning rate scheduler.
+
+## Reproducing Submission
+Our model achieve 78.503% accuracy in testing set.
+
+To reproduce my submission without retrainig, do the following steps:
+1. [Requirements](#Requirements)
+2. [Inference](#Inference)
 
 ## Requirements
 
-To install requirements:
+All requirements should be detailed in requirements.txt.
 
-```setup
-pip install -r requirements.txt
+```
+virtualenv .
+source bin/activate
+pip3 install -r requirements.txt
 ```
 
->📋  Describe how to set up the environment, e.g. pip/conda/docker commands, download datasets, etc...
+Official images can be downloaded from [CodaLab competition](https://competitions.codalab.org/competitions/35668?secret_key=09789b13-35ec-4928-ac0f-6c86631dda07#participate-get_starting_kit)
+
+## Dataset Preparation
+After downloading images from [CodaLab competition](https://competitions.codalab.org/competitions/35668?secret_key=09789b13-35ec-4928-ac0f-6c86631dda07#participate-get_starting_kit), we expect the data directory is structured as:
+```
+data
+  +- training_data         # all training data from CodaLab
+  ∣- 0003.jpg
+  ∣- 0008.jpg
+  ∣- 0010.jpg
+  ∣- ...................
+  +- testing_data          # all testing data from CodaLab
+  ∣- 0001.jpg
+  ∣- 0002.jpg  
+  ∣- 0004.jpg
+  ∣- ...................
+  - classes.txt            # txt file contain 200 class in the dataset
+  - testing_img_order.txt  # txt file about testing img submitting order
+  - training_labels.txt    # txt file contain training img's class and label
+```
+
+## Repository Structure
+
+```
+BirdClassifier
+  +- data           # all file used in the program and the prediction(answer.txt)
+  +- model          # all trained models
+  +- src            
+  ∣- dataset.py    # set a dataset class for loading imgs
+  ∣- inference.py      # reproduce my submission file,
+  ∣- train.py      # training model
+  - requirements.txt     # txt file for establishing the environment
+```
 
 ## Training
 
-To train the model(s) in the paper, run this command:
+To train the model, run this command:
 
 ```train
-python train.py --input-data <path_to_data> --alpha 10 --beta 20
+python train.py
 ```
 
->📋  Describe how to train the models, with example commands on how to train the models in your paper, including the full training procedure and appropriate hyperparameters.
+All experiments will be written in [Results](#Results).
+You can use the table info to adjust the parameters to get a similar model.
 
-## Evaluation
+Trained model will be save as ```model/model.pth```
+
+## Inference
 
 To evaluate my model on ImageNet, run:
 
 ```eval
-python eval.py --model-file mymodel.pth --benchmark imagenet
+python inference.py
 ```
 
->📋  Describe how to evaluate the trained models on benchmarks reported in the paper, give commands that produce the results (section below).
-
-## Pre-trained Models
-
-You can download pretrained models here:
-
-- [My awesome model](https://drive.google.com/mymodel.pth) trained on ImageNet using parameters x,y,z. 
-
->📋  Give a link to where/how the pretrained models can be downloaded and how they were trained (if applicable).  Alternatively you can have an additional column in your results table with a link to the models.
+Prediction file will be save as ```data/answer.txt```
 
 ## Results
 
 Our model achieves the following performance on :
 
-### [Image Classification on ImageNet](https://paperswithcode.com/sota/image-classification-on-imagenet)
 
-| Model name         | Top 1 Accuracy  | Top 5 Accuracy |
-| ------------------ |---------------- | -------------- |
-| My awesome model   |     85%         |      95%       |
-
->📋  Include a table of results from your paper, and link back to the leaderboard for clarity and context. If your main result is a figure, include that figure and link to the command or notebook to reproduce it. 
-
-
-## Contributing
-
->📋  Pick a licence and describe how to contribute to your code repository. 
+| Model name          | Top 1 Accuracy  |
+| ------------------  |---------------- |
+| ResNeXt-101 32x8d   |     78.503%     |
+| ResNet152           |     --%         |
