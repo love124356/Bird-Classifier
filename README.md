@@ -71,6 +71,7 @@ python train.py
 ```
 
 All experiments will be written in [Results](#Results).
+
 You can use the table info to adjust the parameters to get a similar model weights.
 
 Trained model will be save as ```model/model_name.pth```
@@ -78,6 +79,7 @@ Trained model will be save as ```model/model_name.pth```
 ## Inference
 
 Please download [this model]() if you want to reproduce my submission file, and put it in the 'model' folder.
+
 To reproduce my submission file or test the model you trained, run:
 
 ```inference
