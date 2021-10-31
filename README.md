@@ -15,7 +15,7 @@ To reproduce my submission without retrainig, do the following steps:
 
 All requirements should be detailed in requirements.txt.
 
-```
+```env
 virtualenv .
 source bin/activate
 pip3 install -r requirements.txt
@@ -44,7 +44,7 @@ data
 
 ## Repository Structure
 
-Run the following command to build the data directory.
+Run the following command to build the directory.
 ```
 mkdir model
 mkdir data
@@ -53,13 +53,13 @@ mkdir data
 The repository structure is:
 ```
 BirdClassifier
-  +- data           # all file used in the program and the prediction(answer.txt)
-  +- model          # all trained models
+  +- data             # all file used in the program and the prediction(answer.txt)
+  +- model            # all trained models
   +- src            
-  ∣- dataset.py    # set a dataset class for loading imgs
-  ∣- inference.py      # reproduce my submission file,
-  ∣- train.py      # training model
-  - requirements.txt     # txt file for establishing the environment
+  ∣- dataset.py        # set a dataset class for loading imgs
+  ∣- inference.py      # reproduce my submission file
+  ∣- train.py          # training model
+  - requirements.txt  # txt file for establishing the environment
 ```
 
 ## Training
@@ -71,15 +71,16 @@ python train.py
 ```
 
 All experiments will be written in [Results](#Results).
-You can use the table info to adjust the parameters to get a similar model.
+You can use the table info to adjust the parameters to get a similar model weights.
 
-Trained model will be save as ```model/model.pth```
+Trained model will be save as ```model/model_name.pth```
 
 ## Inference
 
-To evaluate my model on ImageNet, run:
+Please download [this model]() if you want to reproduce my submission file, and put it in the 'model' folder.
+To reproduce my submission file or test the model you trained, run:
 
-```eval
+```inference
 python inference.py
 ```
 
