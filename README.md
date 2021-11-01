@@ -108,7 +108,9 @@ Notice that the MODEL_PATH is correct.
 Our model achieves the following performance on :
 
 
-| **Model name**   | **Accuracy** | **LR** | **Optimizer**                       | **Batch size**     | **Scheduler**              |**Img size** | **Other**                                                                    |
-|:-----------------:|:------------:|:------:|:-----------------------------------:|:------------------:|:--------------------------:|:------------:|:----------------------------------------------------------------------------:|
-| ResNeXt-101 32x8d | 0.785031 | 0.001 | SGD, momentum=0.9,weight_decay=3e-4 | train: 4, test:12  | CosineAnnealing, T_max=200 | 375 x 375    | max_padding,CenterCrop, (HorizontalFlip,or VerticalFlip), unfreeze all layer |
-| ResNet152         | 0.762941 | 0.001 | SGD, momentum=0.9,weight_decay=3e-4 | train: 4, test:12  | CosineAnnealing, T_max=200 | 375 x 375    | max_padding,CenterCrop, (HorizontalFlip,or VerticalFlip), unfreeze all layer |
+| **Model name**   | **Accuracy** | **LR** | **Optimizer**                       | **Batch size**     | **Scheduler**              |**Img size** | **Other**                                                                     |
+|-------------------|--------------|--------|-------------------------------------|--------------------|----------------------------|--------------|-------------------------------------------------------------------------------|
+| ResNeXt-101 32x8d | 0.785031 | 0.001 | SGD, momentum=0.9,weight_decay=3e-4 | train: 4, test:12  | CosineAnnealing, T_max=200 | 375 x 375    | max_padding, CenterCrop, (HorizontalFlip,or VerticalFlip), unfreeze all layer |
+| ResNet152         | 0.762941 | 0.001 | SGD, momentum=0.9,weight_decay=3e-4 | train: 4, test:12  | CosineAnnealing, T_max=200 | 375 x 375    | max_padding, CenterCrop, (HorizontalFlip,or VerticalFlip), unfreeze all layer |
+| resnext50_32x4d   | 0.636004 | 0.01 | SGD, momentum=0.9,weight_decay=3e-4 | All: 32            | CosineAnnealing, T_max=200 | 224 x 224    | Horizontal, Rotation, unfreeze last 3 layer                                   |
+| Resnet50          | 0.560831 | 0.001 | SGD, momentum=0.9                   | All: 64            | CosineAnnealing, T_max=4   | 224 x 224    | Horizontal, training set *2, unfreeze 'layer4' and  'fc'                      |
