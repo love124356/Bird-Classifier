@@ -5,7 +5,7 @@ This repository gathers the code for bird image classification from the [in-clas
 Use ResNeXt-101 32x8d with data augmentation and SGD with weight_decay optimizer + 1 cosine annealing learning rate scheduler.
 
 ## Reproducing Submission
-Our model achieve 78.503% accuracy in testing set.
+Our model achieve 78.5031% accuracy in testing set.
 
 To reproduce my submission without retrainig, do the following steps:
 1. [Requirements](#Requirements)
@@ -16,9 +16,10 @@ To reproduce my submission without retrainig, do the following steps:
 All requirements should be detailed in requirements.txt.
 
 ```env
-virtualenv .
-source bin/activate
-pip3 install -r requirements.txt
+$ virtualenv name --python=3.6
+$ source bin/activate
+$ cd BirdClassifier
+$ pip install -r requirements.txt
 ```
 
 Official images can be downloaded from [CodaLab competition](https://competitions.codalab.org/competitions/35668?secret_key=09789b13-35ec-4928-ac0f-6c86631dda07#participate-get_starting_kit)
@@ -95,5 +96,5 @@ Our model achieves the following performance on :
 
 | Model name          | Top 1 Accuracy  |
 | ------------------  |---------------- |
-| ResNeXt-101 32x8d   |     78.503%     |
-| ResNet152           |     --%         |
+| ResNeXt-101 32x8d   |     78.5031%    |
+| ResNet152           |     76.2941%    |
