@@ -11,18 +11,49 @@ To reproduce my submission without retrainig, do the following steps:
 1. [Requirements](#Requirements)
 2. [Inference](#Inference)
 
+## Hardware
+
+Ubuntu 18.04.5 LTS
+
+Intel® Core™ i7-3770 CPU @ 3.40GHz × 8
+
+GeForce GTX 1080/PCIe/SSE2
+
+
 ## Requirements
 
 All requirements should be detailed in requirements.txt.
 
 ```env
-$ virtualenv name --python=3.6
-$ source bin/activate
+$ virtualenv venv --python=3.6
+$ source ./venv/bin/activate
 $ cd BirdClassifier
 $ pip install -r requirements.txt
 ```
 
 Official images can be downloaded from [CodaLab competition](https://competitions.codalab.org/competitions/35668?secret_key=09789b13-35ec-4928-ac0f-6c86631dda07#participate-get_starting_kit)
+
+
+## Repository Structure
+
+Run the following command to build the directory.
+```
+$ mkdir model
+$ mkdir data
+```
+
+The repository structure is:
+```
+BirdClassifier
+  +- data                     # all file used in the program and answer.txt save here
+  +- model                    # all trained models
+  +- confusion_matrix_result  # confusion matrix of models
+  +- src            
+  ∣- dataset.py              # set a dataset class for loading imgs
+  ∣- inference.py            # reproduce my submission file or test your model
+  ∣- train.py                # for training model
+  - requirements.txt          # txt file for establishing the environment
+```
 
 ## Dataset Preparation
 After downloading images from [CodaLab competition](https://competitions.codalab.org/competitions/35668?secret_key=09789b13-35ec-4928-ac0f-6c86631dda07#participate-get_starting_kit), we expect the data directory is structured as:
@@ -43,25 +74,6 @@ data
   - training_labels.txt    # txt file contain training img's class and label
 ```
 
-## Repository Structure
-
-Run the following command to build the directory.
-```
-mkdir model
-mkdir data
-```
-
-The repository structure is:
-```
-BirdClassifier
-  +- data             # all file used in the program and the prediction(answer.txt)
-  +- model            # all trained models
-  +- src            
-  ∣- dataset.py        # set a dataset class for loading imgs
-  ∣- inference.py      # reproduce my submission file
-  ∣- train.py          # training model
-  - requirements.txt  # txt file for establishing the environment
-```
 
 ## Training
 
@@ -96,7 +108,7 @@ Notice that the MODEL_PATH is correct.
 Our model achieves the following performance on :
 
 
-| Model name          |  Top 1 Accuracy | Top 1 Accuracy  |
-| ------------------  | ----------------|---------------- |
-| ResNeXt-101 32x8d   |     78.5031%    |     78.5031%    |
-| ResNet152           |     76.2941%    |     76.2941%    |
+| **Model name**   | **LR** | **Optimizer**                       | **Batch size**     | **Scheduler**              | **Img size**| **Other**                                                                    | **Accuracy** |
+|:-----------------:|:------:|:-----------------------------------:|:------------------:|:--------------------------:|:------------:|:----------------------------------------------------------------------------:|:------------:|
+| ResNeXt-101 32x8d | 0.001 | SGD, momentum=0.9,weight_decay=3e-4 | train: 4, test:12  | CosineAnnealing, T_max=200 | 375 x 375    | max_padding,CenterCrop, (HorizontalFlip,or VerticalFlip), unfreeze all layer | 0.785031 |
+| ResNet152         | 0.001 | SGD, momentum=0.9,weight_decay=3e-4 | train: 4, test:12  | CosineAnnealing, T_max=200 | 375 x 375    | max_padding,CenterCrop, (HorizontalFlip,or VerticalFlip), unfreeze all layer | 0.762941 |
