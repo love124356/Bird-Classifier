@@ -16,9 +16,10 @@ To reproduce my submission without retrainig, do the following steps:
 All requirements should be detailed in requirements.txt.
 
 ```env
-virtualenv .
-source bin/activate
-pip3 install -r requirements.txt
+$ virtualenv name --python=3.6
+$ source bin/activate
+$ cd BirdClassifier
+$ pip install -r requirements.txt
 ```
 
 Official images can be downloaded from [CodaLab competition](https://competitions.codalab.org/competitions/35668?secret_key=09789b13-35ec-4928-ac0f-6c86631dda07#participate-get_starting_kit)
