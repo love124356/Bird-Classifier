@@ -108,7 +108,7 @@ Notice that the MODEL_PATH is correct.
 Our model achieves the following performance on :
 
 
-| **Model name**   | **LR** | **Optimizer**                       | **Batch size**     | **Scheduler**              | **Img size**| **Other**                                                                    | **Accuracy** |
-|:-----------------:|:------:|:-----------------------------------:|:------------------:|:--------------------------:|:------------:|:----------------------------------------------------------------------------:|:------------:|
-| ResNeXt-101 32x8d | 0.001 | SGD, momentum=0.9,weight_decay=3e-4 | train: 4, test:12  | CosineAnnealing, T_max=200 | 375 x 375    | max_padding,CenterCrop, (HorizontalFlip,or VerticalFlip), unfreeze all layer | 0.785031 |
-| ResNet152         | 0.001 | SGD, momentum=0.9,weight_decay=3e-4 | train: 4, test:12  | CosineAnnealing, T_max=200 | 375 x 375    | max_padding,CenterCrop, (HorizontalFlip,or VerticalFlip), unfreeze all layer | 0.762941 |
+| **Model name**   | **Accuracy** | **LR** | **Optimizer**                       | **Batch size**     | **Scheduler**              |**Img size** | **Other**                                                                    |
+|:-----------------:|:------------:|:------:|:-----------------------------------:|:------------------:|:--------------------------:|:------------:|:----------------------------------------------------------------------------:|
+| ResNeXt-101 32x8d | 0.785031 | 0.001 | SGD, momentum=0.9,weight_decay=3e-4 | train: 4, test:12  | CosineAnnealing, T_max=200 | 375 x 375    | max_padding,CenterCrop, (HorizontalFlip,or VerticalFlip), unfreeze all layer |
+| ResNet152         | 0.762941 | 0.001 | SGD, momentum=0.9,weight_decay=3e-4 | train: 4, test:12  | CosineAnnealing, T_max=200 | 375 x 375    | max_padding,CenterCrop, (HorizontalFlip,or VerticalFlip), unfreeze all layer |
