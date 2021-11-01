@@ -1,6 +1,6 @@
-# Ignore all data from CodaLab competition and Model
-Data
-Model
+# Ignore all data from CodaLab competition and trained model
+data
+model
 
 # env 
 .vscode
