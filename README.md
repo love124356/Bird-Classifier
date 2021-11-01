@@ -79,7 +79,7 @@ Trained model will be save as ```model/model_name.pth```
 
 ## Inference
 
-Please download [this model]() if you want to reproduce my submission file, and put it in the 'model' folder.
+Please download [this model](https://reurl.cc/Rb2ZD6) if you want to reproduce my submission file, and put it in the 'model' folder.
 
 To reproduce my submission file or test the model you trained, run:
 
@@ -89,12 +89,14 @@ python inference.py
 
 Prediction file will be save as ```data/answer.txt```
 
+Notice that the MODEL_PATH is correct.
+
 ## Results
 
 Our model achieves the following performance on :
 
 
-| Model name          | Top 1 Accuracy  |
-| ------------------  |---------------- |
-| ResNeXt-101 32x8d   |     78.5031%    |
-| ResNet152           |     76.2941%    |
+| Model name          |  Top 1 Accuracy | Top 1 Accuracy  |
+| ------------------  | ----------------|---------------- |
+| ResNeXt-101 32x8d   |     78.5031%    |     78.5031%    |
+| ResNet152           |     76.2941%    |     76.2941%    |
