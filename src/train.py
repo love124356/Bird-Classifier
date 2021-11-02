@@ -158,7 +158,7 @@ dataloaders["val"] = DataLoader(image_datasets["val"],
 
 dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'val']}
 
-model_ft = models.ResNeXt101_32x8d(pretrained=True)
+model_ft = models.resnext101_32x8d(pretrained=True)
 num_ftrs = model_ft.fc.in_features
 model_ft.fc = nn.Sequential(nn.Linear(num_ftrs, NUM_CLASSES))
 model_ft = model_ft.to(device)
