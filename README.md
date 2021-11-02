@@ -80,7 +80,7 @@ data
 To train the model, run this command:
 
 ```train
-python train.py
+python ./src/train.py
 ```
 
 Notice that the MODEL_PATH is correct or not.
@@ -98,7 +98,7 @@ Please download [this model](https://reurl.cc/Rb2ZD6) if you want to reproduce m
 To reproduce my submission file or test the model you trained, run:
 
 ```inference
-python inference.py
+python ./src/inference.py
 ```
 
 Notice that the MODEL_PATH is correct or not.
