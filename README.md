@@ -47,7 +47,7 @@ The repository structure is:
 BirdClassifier
   +- data                     # all file used in the program 
   +- model                    # all trained models
-  +- result                   # confusion matrix of models and answer.txt save here
+  +- result                   # confusion matrix of two models and answer.txt save here
   +- src            
   ∣- dataset.py               # set a dataset class for loading imgs
   ∣- inference.py             # reproduce my submission file or test your model
@@ -89,7 +89,7 @@ All experiments will be written in [Results](#Results).
 
 You can use the table info to adjust the parameters to get a similar model weights.
 
-Trained model will be save as ```model/model_name.pth```
+Trained model will be saved as ```model/model_name.pth```
 
 ## Inference
 
