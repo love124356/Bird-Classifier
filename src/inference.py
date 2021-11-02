@@ -10,6 +10,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print("Device: ", device)
 
 DATA_ROOT = r"./data/"
+RESULT_PATH = r"./result/"
 BATCH_SIZE = 4 * 3
 IMG_SIZE_W = 375
 IMG_SIZE_H = 375
@@ -76,4 +77,4 @@ submission = []
 for i, y in enumerate(predict):
     submission.append([test_images[i], classes[y]])
 
-np.savetxt(DATA_ROOT + 'answer.txt', submission, fmt='%s')
+np.savetxt(RESULT_PATH + 'answer.txt', submission, fmt='%s')

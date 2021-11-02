@@ -2,7 +2,7 @@
 
 This repository gathers the code for bird image classification from the [in-class CodaLab competition](https://competitions.codalab.org/competitions/35668?secret_key=09789b13-35ec-4928-ac0f-6c86631dda07).
 
-Use ResNeXt-101 32x8d with data augmentation and SGD with weight_decay optimizer + 1 cosine annealing learning rate scheduler.
+Use ResNeXt-101 32x8d with data augmentation and SGD with weight_decay optimizer + cosine annealing learning rate scheduler.
 
 ## Reproducing Submission
 Our model achieve 78.5031% accuracy in testing set.
@@ -45,13 +45,13 @@ $ mkdir data
 The repository structure is:
 ```
 BirdClassifier
-  +- data                     # all file used in the program and answer.txt save here
+  +- data                     # all file used in the program 
   +- model                    # all trained models
-  +- confusion_matrix_result  # confusion matrix of models
+  +- result                   # confusion matrix of models and answer.txt save here
   +- src            
-  ∣- dataset.py              # set a dataset class for loading imgs
-  ∣- inference.py            # reproduce my submission file or test your model
-  ∣- train.py                # for training model
+  ∣- dataset.py               # set a dataset class for loading imgs
+  ∣- inference.py             # reproduce my submission file or test your model
+  ∣- train.py                 # for training model
   - requirements.txt          # txt file for establishing the environment
 ```
 
@@ -83,6 +83,8 @@ To train the model, run this command:
 python train.py
 ```
 
+Notice that the MODEL_PATH is correct or not.
+
 All experiments will be written in [Results](#Results).
 
 You can use the table info to adjust the parameters to get a similar model weights.
@@ -99,9 +101,9 @@ To reproduce my submission file or test the model you trained, run:
 python inference.py
 ```
 
-Prediction file will be save as ```data/answer.txt```
+Notice that the MODEL_PATH is correct or not.
 
-Notice that the MODEL_PATH is correct.
+Prediction file will be saved as ```data/answer.txt```
 
 ## Results
 
@@ -110,7 +112,7 @@ Our model achieves the following performance on :
 
 | **Model name**   | **Accuracy** | **LR** | **Optimizer**                       | **Batch size**     | **Scheduler**              |**Img size** | **Other**                                                                     |
 |-------------------|--------------|--------|-------------------------------------|--------------------|----------------------------|--------------|-------------------------------------------------------------------------------|
-| ResNeXt-101 32x8d | 0.785031 | 0.001 | SGD, momentum=0.9,weight_decay=3e-4 | train: 4, test:12  | CosineAnnealing, T_max=200 | 375 x 375    | max_padding, CenterCrop, (HorizontalFlip,or VerticalFlip), unfreeze all layer |
-| ResNet152         | 0.762941 | 0.001 | SGD, momentum=0.9,weight_decay=3e-4 | train: 4, test:12  | CosineAnnealing, T_max=200 | 375 x 375    | max_padding, CenterCrop, (HorizontalFlip,or VerticalFlip), unfreeze all layer |
-| resnext50_32x4d   | 0.636004 | 0.01 | SGD, momentum=0.9,weight_decay=3e-4 | All: 32            | CosineAnnealing, T_max=200 | 224 x 224    | Horizontal, Rotation, unfreeze last 3 layer                                   |
-| Resnet50          | 0.560831 | 0.001 | SGD, momentum=0.9                   | All: 64            | CosineAnnealing, T_max=4   | 224 x 224    | Horizontal, training set *2, unfreeze 'layer4' and  'fc'                      |
+| ResNeXt-101 32x8d | 78.5031% | 0.001 | SGD, momentum=0.9,weight_decay=3e-4 | train: 4, test:12  | CosineAnnealing, T_max=200 | 375 x 375    | max_padding, CenterCrop, (HorizontalFlip,or VerticalFlip), unfreeze all layer |
+| ResNet152         | 76.2941% | 0.001 | SGD, momentum=0.9,weight_decay=3e-4 | train: 4, test:12  | CosineAnnealing, T_max=200 | 375 x 375    | max_padding, CenterCrop, (HorizontalFlip,or VerticalFlip), unfreeze all layer |
+| resnext50_32x4d   | 63.6004% | 0.01 | SGD, momentum=0.9,weight_decay=3e-4 | All: 32            | CosineAnnealing, T_max=200 | 224 x 224    | Horizontal, Rotation, unfreeze last 3 layer                                   |
+| Resnet50          | 56.0831% | 0.001 | SGD, momentum=0.9                   | All: 64            | CosineAnnealing, T_max=4   | 224 x 224    | Horizontal, training set *2, unfreeze 'layer4' and  'fc'                      |
