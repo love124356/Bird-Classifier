@@ -103,7 +103,7 @@ python ./src/inference.py
 
 Notice that the MODEL_PATH is correct or not.
 
-Prediction file will be saved as ```data/answer.txt```
+Prediction file will be saved as ```result/answer.txt```
 
 ## Results
 
